@@ -7,6 +7,8 @@ using UnityEngine;
     Credits: Acacia Developer
         - https://www.youtube.com/channel/UCXUiajdy-DV4D_aQ2wr-7Sg
         - https://github.com/Acacia-Developer/
+
+    
  */
 
 public class PlayerController : MonoBehaviour
@@ -17,6 +19,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float gravity = -13.0f;
     [SerializeField] [Range(0.0f, 0.5f)] float moveSmoothTime = 0.3f;
     [SerializeField] [Range(0.0f, 0.5f)] float mouseSmoothTime = 0.03f;
+
+    [SerializeField] [Range(5f, 15f)] float jumpForce = 7.5f;
 
     [SerializeField] bool lockCursor = true;
 
@@ -69,8 +73,11 @@ public class PlayerController : MonoBehaviour
         if (controller.isGrounded)
             velocityY = 0.0f;
 
+        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
+            velocityY += jumpForce;
+            
         velocityY += gravity * Time.deltaTime;
-
+        
         Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * walkSpeed + Vector3.up * velocityY;
 
         controller.Move(velocity * Time.deltaTime);
