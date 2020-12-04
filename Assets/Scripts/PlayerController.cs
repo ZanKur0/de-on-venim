@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float walkSpeed = 6.0f;
     [SerializeField] float runSpeed = 10.0f;
     [SerializeField] float gravity = -13.0f;
+    [SerializeField] float mass = 13.0f;
     [SerializeField] [Range(0.0f, 0.5f)] float moveSmoothTime = 0.3f;
     [SerializeField] [Range(0.0f, 0.5f)] float mouseSmoothTime = 0.03f;
 
@@ -77,8 +78,10 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
             velocityY += jumpForce;
-            
-        velocityY += gravity * Time.deltaTime;
+
+        // If mass >= 0 means it weight less than the air, so it will start floating
+        float force = (gravity * ((mass <= 0 ) ? 10 : mass)) * Time.deltaTime;
+        velocityY += force;
 
         Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * ((Input.GetKey(runKey)) ? runSpeed : walkSpeed) + Vector3.up * velocityY;
   
