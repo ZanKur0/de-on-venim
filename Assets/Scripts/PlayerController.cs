@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform playerCamera = null;
     [SerializeField] float mouseSensitivity = 3.5f;
     [SerializeField] float walkSpeed = 6.0f;
+    [SerializeField] float runSpeed = 10.0f;
     [SerializeField] float gravity = -13.0f;
     [SerializeField] [Range(0.0f, 0.5f)] float moveSmoothTime = 0.3f;
     [SerializeField] [Range(0.0f, 0.5f)] float mouseSmoothTime = 0.03f;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] [Range(5f, 15f)] float jumpForce = 7.5f;
 
     [SerializeField] bool lockCursor = true;
+    [SerializeField] KeyCode runKey = KeyCode.LeftShift;
 
     float cameraPitch = 0.0f;
     float velocityY = 0.0f;
@@ -77,8 +79,9 @@ public class PlayerController : MonoBehaviour
             velocityY += jumpForce;
             
         velocityY += gravity * Time.deltaTime;
-        
-        Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * walkSpeed + Vector3.up * velocityY;
+
+        Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * ((Input.GetKey(runKey)) ? runSpeed : walkSpeed) + Vector3.up * velocityY;
+  
 
         controller.Move(velocity * Time.deltaTime);
 
